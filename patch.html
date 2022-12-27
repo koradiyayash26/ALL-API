@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />
+<body>
+  <form id="form" method="post">
+    <label >ID</label>
+    <input type="id" id="id" />
+    <label >First Name</label>
+    <input type="text" id="fname"  />
+    <label >Last Name</label>
+    <input type="text" id="lname"  />
+    <label >Email</label>
+    <input type="email" id="email" />
+    <button onclick="update()">submit</button>
+  </form>
+  <table>
+    <thead>
+      <th>ID</th>
+      <th>Email</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+    </thead>
+    <tbody id="td"></tbody>
+  </table>
+</body>
+<script>
+  var form = $("#form");
+  form.submit(function (e) {
+    e.preventDefault();
+    var data = {
+      fname: $("#fname").val(),
+      lname: $("#lname").val(),
+      email: $("#email").val(),
+    };
+    $.ajax({
+      type: "POST",
+      url: "https://reqres.in/api/register",
+      data: data,
+      success: function (data) {
+        console.log("success: ", data);
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  });
+
+  var tr = "";
+  $.ajax({
+    url: "https://reqres.in/api/users",
+    type: "get",
+    success: function (data) {
+      var u = data["data"];
+      for (var i = 0; i < u.length; i++) {
+        tr += `<tr onclick="userClick(${u[i].id})">
+            <td>${u[i].id}</td>
+            <td>${u[i].email}</td>
+            <td>${u[i].first_name}</td>
+            <td>${u[i].last_name}</td>
+            </tr>`;
+      }
+      $("#td").html(tr);
+    },
+    error: function (error) {
+      console.log(error.responseJSON);
+    },
+  });
+  function userClick(id) {
+    $.ajax({
+      url: "https://reqres.in/api/users/"+id,
+      type: "get",
+      success: function (payload) {
+        var data = payload.data;
+        $("#id").val(data.id);
+        $("#fname").val(data.first_name);
+        $("#lname").val(data.last_name);
+        $("#email").val(data.email);
+      },
+      error: function(error) {
+        console.log(error.responseJSON);
+      }
+    })
+  }
+  function update() {
+    var dataa = {
+      name: $("#fname").val(),
+      job: $("#lname").val()
+    };
+    console.log("https://reqres.in/api/users/"+$("#id").val()); 
+    $.ajax({
+      type: "patch",
+      data: dataa,
+      url: "https://reqres.in/api/users/"+$("#id").val(),
+      success: function(data){
+        console.log(data);
+      },
+      error: function(error) {
+        console.log(error.responseJSON);
+      }
+    });
+  }
+</script>
+</html>

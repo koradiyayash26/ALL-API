@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+  </head>
+  <body>
+    <form id="form" method="get">
+      id:<input type="text" id="id" /> email:
+      <input type="email" id="email" /> fname:
+      <input type="text" id="fname" /> lname: <input type="text" id="lname" />
+      <button type="submit">submit</button>
+    </form>
+    <table>
+      <tr>
+        <th>id</th>
+        <th>email</th>
+        <th>fname</th>
+        <th>lname</th>
+        <tbody id="td"></tbody>
+      </tr>
+    </table>
+    <script>
+      var form = $("#form");
+      form.submit(function (a) {
+        a.preventDefault();
+        var formdata = {
+          id: $("#id").val(),
+          email: $("#email").val(),
+          fname: $("#fname").val(),
+          lname: $("#lname").val(),
+        };
+        console.log(formdata);
+        
+        console.log("Function called", "https://reqres.in/api/users/" + id);
+        $.ajax({
+          url: "https://reqres.in/api/users/" + id,
+          type: "get",
+          success: function (payload) {
+            var data = payload.data;
+            $("#id").val(data.id);
+            $("#fname").val(data.first_name);
+            $("#lname").val(data.last_name);
+            $("#email").val(data.email);
+          },
+          error: function (error) {
+            console.log(error.responseJSON);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

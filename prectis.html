@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+  </head>
+  <body>
+    <form id="form" method="get">
+      id: <input type="text" id="id" /> email:
+      <input type="email" id="email" /> firstname:
+      <input type="text" id="fname" /> lastname:
+      <input type="text" id="lname" />
+      <button type="submit">subkmit</button>
+    </form>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>email</th>
+            <th>fname</th>
+            <th>lname</th>
+        </tr>
+        <tbody id="td"></tbody>
+    </table>
+    <script>
+      var form = $("#form");
+      form.submit(function (a) {
+        a.preventDefault();
+        var data = {
+          id: $("#id").val(),
+          email: $("#email").val(),
+          fname: $("#fname").val(),
+          lname: $("#lname").val(),
+        };
+        console.log(data);
+      });
+      $.ajax({
+          url:"https://reqres.in/api/register",
+          type:"get",
+        data:data,       
+        success:function(data){
+            console.log("sucseec",data);
+        },
+        error:function(error){
+            console.log(error.responseJSON);
+        },
+      });
+      var z = "";
+    $.ajax({
+      url: "https://reqres.in/api/users",
+      type: "get",
+      success: function (data) {
+        var a = data["data"];
+        for (var i = 0; i < a.length; i++) {
+            z += `<tr>
+                <td>${a[i].id}</td>
+                <td>${a[i].email}</td>
+                <td>${a[i].first_name}</td>
+                <td>${a[i].last_name}</td>
+                </tr>`;
+            }
+            console.log("watattat",z);
+        $("#td").html(z);
+      },
+      error: function (error) {
+        console.log(error.responseJSON);
+      },
+    });
+    </script>
+  </body>
+</html>
