@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>delete</title>
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+  />
+  <body>
+    <form id="form" method="post">
+      id:<input type="id" id="id" /> fnam:<input type="text" id="fname" />
+      lname:<input type="text" id="lname" /> email:<input
+        type="email"
+        id="email"
+      />
+      <button onclick="updata()">submit</button>
+    </form>
+    <table>
+      <thead>
+        <th>id</th>
+        <th>E-mail</th>
+        <th>Fname</th>
+        <th>Lname</th>
+        <th>img</th>
+      </thead>
+      <tbody id="td"></tbody>
+    </table>
+  </body>
+  <script>
+    var form = $("#form");
+    form.submit(function (e) {
+      e.preventDefault();
+      var fdata = {
+        email: $("#email").val(),
+        fname: $("#fname").val(),
+        lname: $("#lname").val(),
+      };
+      console.log(fdata);
+    });
+    var s = "";
+    $.ajax({
+      url: "https://reqres.in/api/users",
+      type: "get",
+      success: function (data) {
+        var b = data["data"];
+        for (var i = 0; i < b.length; i++) {
+          s += `<tr onclick="add(${b[i].id})">
+            <td>${b[i].id}</td>
+            <td>${b[i].email}</td>
+            <td>${b[i].first_name}</td>
+            <td>${b[i].last_name}</td>
+            <td><img src="${b[i].avatar}" alt="Image not found!"/> </td>
+            <td><button onclick="delet(${b[i].id})">Delet</button></td>
+            </tr>`;
+        }
+        $("#td").html(s);
+      },
+      error: function (error) {
+        console.log(error.responseJSON);
+      },
+    });
+    function add(id) {
+      console.log("Function called", "https://reqres.in/api/users/" + id);
+      $.ajax({
+        url: "https://reqres.in/api/users/" + id,
+        type: "get",
+        success: function (payload) {
+          var data = payload.data;
+          $("#id").val(data.id);
+          $("#fname").val(data.first_name);
+          $("#lname").val(data.last_name);
+          $("#email").val(data.email);
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
+    function updata() {
+      var fdata = {
+        name: $("#fname").val(),
+        job: $("#lname").val(),
+      };
+      console.log("https://reqres.in/api/users/" + $("#id").val());
+      $.ajax({
+        type: "patch",
+        data: fdata,
+        url: "https://reqres.in/api/users/" + $("#id").val(),
+        success: function (data) {
+          console.log(data);
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
+    function delet(id) {
+      console.log(id);
+      $.ajax({
+        type: "delete",
+        url: "https://reqres.in/api/users/" + id,
+        success: function (data) {
+          alert("delete yor qurey", data);
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
+  </script>
+</html>

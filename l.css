@@ -1,0 +1,11 @@
+.flex-1{
+    display: flex;
+    justify-content: center;
+}
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+}
+img{
+    width: 100px;
+}

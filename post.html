@@ -10,6 +10,7 @@
       rel="stylesheet"
       href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
     />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   </head>
   <body>
     <form id="form" method="post">
@@ -21,24 +22,38 @@
   </body>
   <script>
     var form = $("#form");
-  form.submit(function (e) {
-    e.preventDefault();
-    var formdata = {
-      email: $("#email").val(),
-      password: $("#password").val(),
-    };
-    console.log(formdata);
-    $.ajax({
-        type:"post",
-        url:"https://reqres.in/api/register",
-        data:formdata,
-        success:function (data){
-            console.log("callde",data);
+    form.submit(function (e) {
+      e.preventDefault();
+      var formdata = {
+        email: $("#email").val(),
+        password: $("#password").val(),
+      };
+      console.log(formdata);
+      $.ajax({
+        type: "post",
+        url: "https://reqres.in/api/register",
+        data: formdata,
+        success: function (data) {
+          console.log("callde", data);
+          alert("Post Succes");
+          swal({
+            title: "Good job!",
+            text: "You clicked the button!",
+            icon: "success",
+            button: "Aww yiss!",
+          });
         },
-        error:function(error){
-            console.log("error");
-        }
-    });
+        error: function (error) {
+          console.log("error");
+          swal({
+  title: "Something Went Wrong",
+  text: "Sorry Can't found!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+ },
+      });
     });
   </script>
 </html>
