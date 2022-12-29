@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Twitter</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+  </head>
+  <style>
+    body{
+        background-color: #383a47;
+        font-family: Source Sans Pro,sans-serif!important;
+    }
+    #dollor {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    hr{
+        border-color: #98a3c6;
+    }
+    .b{
+        display: flex;
+        align-items: center;
+    }
+    .btc{
+        color: white;
+    }
+    .last{
+        color: #98A3c6;
+    }
+    .c{
+        margin-left: 10px;
+    }
+    .m{
+        margin-left: 10px;
+    }
+    .market-cp{
+        display: flex;
+        justify-content: right;
+    }
+  </style>
+  <body>
+    <h1 class="btc">Top cryptos by Marketcap</h1>
+    <div id="dollor">
+      <h4 class="last">Name</h4>
+      <h4 class="last">Market cap</h4>
+    </div>
+    <hr />
+    <div id="q"></div>
+  </body>
+  <script>
+    var y = "";
+    $.ajax({
+      url: "https://api.exwhere.com/coins/?page=1",
+      type: "get",
+      success: function (g) {
+        var a = g["results"];
+        for (var i = 1; i < a.length; i++) {
+            console.log(a)
+          y += `<div class="ok">
+            <div class="b">
+            <div><img width="24px" src="${a[i].image}"/></div>
+            <div class="c">
+            <div class="btc">${a[i].name}</div>
+            <div class="last">${a[i].symbol}</div>
+            </div>
+            </div>
+            </div>
+            <div class="market-cp m btc">${a[i].market_cap}</div>
+            <hr>
+            </.div>`;
+          console.log(y);
+        }
+        $("#q").html(y);
+      },
+    });
+  </script>
+</html>
