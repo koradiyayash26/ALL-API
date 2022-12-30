@@ -1,0 +1,76 @@
+body {
+  font-family: Source Sans Pro, sans-serif;
+  background-color: rgba(56, 58, 71, 1);
+}
+#main-top {
+  width: 90%;
+  margin: auto;
+}
+.symbol {
+  text-transform: uppercase;
+  font-size: 15px;
+  color: rgba(152, 163, 198, 1);
+}
+#table-one {
+  width: 100%;
+}
+.details {
+  font-size: 30px;
+  color:white;
+}
+.x {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.image {
+  width: 50px;
+}
+.heading {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+#paisa {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+h4 {
+  margin-bottom: 0;
+}
+.name {
+  font-size: 18px;
+  color: rgb(255, 255, 255);
+}
+.tr-one {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+  padding-right: 25px;
+  align-items: center;
+  color: rgb(152, 163, 198);
+  border-bottom: 1.3px solid;
+  border-image: linear-gradient(90deg, #57596b, #47495c) 1 stretch;
+  margin-top: 10px;
+  padding-left: 25px;
+}
+img {
+  width: 24px;
+  height: 24px;
+}
+#main-item {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.3px solid;
+  border-image: linear-gradient(90deg, #57596b, #47495c) 1 stretch;
+  height: 70px;
+  color: rgba(255, 255, 255, 1);
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.moneyy {
+  font-size: 15px;
+}

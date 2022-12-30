@@ -2,83 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Twitter</title>
+    <link rel="stylesheet" href="style.css">
+    <title>BTC</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
-    />
   </head>
-  <style>
-    body{
-        background-color: #383a47;
-        font-family: Source Sans Pro,sans-serif!important;
-    }
-    #dollor {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-    hr{
-        border-color: #98a3c6;
-    }
-    .b{
-        display: flex;
-        align-items: center;
-    }
-    .btc{
-        color: white;
-    }
-    .last{
-        color: #98A3c6;
-    }
-    .c{
-        margin-left: 10px;
-    }
-    .m{
-        margin-left: 10px;
-    }
-    .market-cp{
-        display: flex;
-        justify-content: right;
-    }
-  </style>
-  <body>
-    <h1 class="btc">Top cryptos by Marketcap</h1>
-    <div id="dollor">
-      <h4 class="last">Name</h4>
-      <h4 class="last">Market cap</h4>
+   <body>
+    <div id="yash"></div>
+    <div id="main-top">
+      <div class="details">
+        <!-- top heading start -->
+        <h4>Top Cryptos by Marketcap</h4>
+      </div>
+      <table id="table-one">
+        <thead class="x">
+          <tr class="tr-one">
+            <!-- uplaaa bey heading name  -->
+            <th class="heading">name</th>
+            <th class="heading">Market Cap</th>
+          </tr>
+        </thead>
+        <!-- alll dataaa addd on this  -->
+        <tbody id="add"></tbody>
+      </table>
     </div>
-    <hr />
-    <div id="q"></div>
   </body>
   <script>
-    var y = "";
     $.ajax({
-      url: "https://api.exwhere.com/coins/?page=1",
+      url: "https://api.exwhere.com/coins/",
       type: "get",
-      success: function (g) {
-        var a = g["results"];
-        for (var i = 1; i < a.length; i++) {
-            console.log(a)
-          y += `<div class="ok">
-            <div class="b">
-            <div><img width="24px" src="${a[i].image}"/></div>
-            <div class="c">
-            <div class="btc">${a[i].name}</div>
-            <div class="last">${a[i].symbol}</div>
-            </div>
-            </div>
-            </div>
-            <div class="market-cp m btc">${a[i].market_cap}</div>
-            <hr>
-            </.div>`;
-          console.log(y);
+      success: function (payload) {
+        var data = payload["results"];
+        console.log(data);
+        var btcs = "";
+        for (var i = 1; i < data.length; i++) {
+          btcs += `<tr id="main-item"><td id="paisa">
+                <div class="image"><img src='${data[i].image}'></div>
+                <div class="item">  
+                <div class="name">${data[i].name}</div>
+                <div class="symbol">${data[i].symbol}</div>
+                </div>
+                </td><td class="moneyy">
+                    <div>${data[i].market_cap}</div>
+                    </td></tr>`;
         }
-        $("#q").html(y);
+        console.log(btcs);
+        $("#add").html(btcs);
       },
     });
   </script>
