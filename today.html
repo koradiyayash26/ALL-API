@@ -15,6 +15,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
   </head>
+  <style>
+    .h{
+      display: none;
+    }
+  </style>
   <body>
     <div>
       <input type="text" id="input" />
@@ -25,13 +30,12 @@
     $(document).ready(function () {
       $("#input").change(function () {
         var input = $(this).val();
-        $("ul").append("<li>" + input);
+        $("ul").append('<li class="a"><div class="divli">'+input+ '</div></li>');
         $(this).val("");
       });
-      $("#ok").click(function () {
-        $(this).hide();
-        alert("Hide One element");
-      });
+        $('ul').on("click",'.divli',function(){
+            $(this).parent('.a').addClass("h")
+        }); 
     });
   </script>
 </html>
