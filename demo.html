@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post listing</title>
+    <link rel="stylesheet" href="macke.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  <style>
+    .koradiya{
+      display: none;
+    }
+  </style>
+  <body>
+    <form id="form">
+      <input type="text" id="title" /><input
+        type="text"
+        id="body"
+      />
+      <button id="jajajaj" type="submit">submit</button>
+    </form>
+    <h1 id="looo"></h1>
+    <div id="main"></div>
+  </body>
+  <script>
+    function patch(id) {
+      var titel = $("#title").val();
+      console.log(title);
+      $(".body").html(title);
+      var body = $("#body").val();
+      console.log(body);
+      $(".title").html(body);
+      $("#jajajaj").addClass("koradiya");
+      $("#body").addClass("koradiya");
+    }
+    // cnnnnnnnnnnnnnnnnnnnnnnnnncn
+    var post = [];
+    var users = [];
+    $(document).ready(function () {
+      $.ajax({
+        type: "get",
+        url: "https://jsonplaceholder.typicode.com/posts/",
+        success: function (payload) {
+          post = payload;
+          console.log(post);
+        },
+      });
+      $.ajax({
+        type: "get",
+        url: "https://jsonplaceholder.typicode.com/users/",
+        success: function (payload) {
+          users = payload;
+          console.log(users);
+        },
+      });
+    });
+    setTimeout(() => {
+      for (var i = 0; i < post.length; i++) {
+        for (var j = 0; j < users.length; j++) {
+          if (post[i]["userId"] == users[j]["id"]) {
+            post[i]["username"] = users[j]["username"];
+            post[i]["name"] = users[j]["name"];
+          }
+        }
+      }
+      var yashpatel = "";
+      for (var y = 0; y < post.length; y++) {
+        yashpatel += `
+            <div class="content">
+                <div class="main" data-id='${post[y].id}' id='${post[y].id}'>
+                    <div class="two"></div>
+                    <div class="one">${post[y].username}</div>
+                    <div class="three">
+                        <div class="item1"><a href="#">${post[y].name}</a></div>
+                        <div class="haha"><a href="#">@${post[y].username}</a></div>
+                        <div class="title">${post[y].title}</div>
+                        <div class="body">${post[y].body}</div>
+                        </div>
+                        </div>
+                        <button id="lowde" onclick="patch()" class="edit">Edit</button>
+                        <button onclick="deleteUser()" class="delet">Delete</button>
+                        <button><a href="">home</a></button>
+                        </div>
+                        <hr>`;
+      }
+      $("#main").html(yashpatel);
+      $("#main").on("click", ".delet", function () {
+        $(this).parent(".content").addClass("today");
+      });
+      $(".main").each(function () {
+        var capitol = $(this).find(".one").text();
+        var akada = capitol.charAt(0);
+        $(this).find(".two").text(akada);
+      });
+    }, 1000);
+    function deleteUser(yashpatel) {
+      $.ajax({
+        type: "delete",
+        url: "https://jsonplaceholder.typicode.com/users/" + yashpatel,
+        success: function (data) {
+          swal({
+            title: "Good job!",
+            text: "You clicked the button!",
+            icon: "success",
+            button: "Aww yiss!",
+          });
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
+  </script>
+</html>
