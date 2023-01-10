@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  <body>
+    <form id="form">
+      E-mail: <input type="email" id="e-in" />
+      <br />
+      Password: <input type="password" id="p-in" />
+      <button id="delet">Submit</button>
+      <button>Delete</button>
+    </form>
+  </body>
+  <script>
+    var form = $("#form");
+    form.submit(function (e) {
+      e.preventDefault();
+      formdata = {
+        email: $("#e-in").val(),
+        password: $("#p-in").val(),
+      };
+      console.log(formdata);
+      $.ajax({
+        type: "POST",
+        url: "https://reqres.in/api/login",
+        data: formdata,
+        success: function (data) {
+          console.log(data, "ok");
+          localStorage.setItem("token", data.token);
+          swal({
+            title: "Good job!",
+            text: "LOG IN SUCCESFULL",
+            button: "Ok",
+          });
+          window.location.href = "posts.html";
+        },
+        error: function (error) {
+          console.log(error.responseJSON, "error");
+          swal({
+            title: "Something Went Wrong",
+            icon: "warning",
+            dangerMode: true,
+          });
+          window.location.href = "login.html";
+        },
+      });
+    });
+  </script>
+</html>

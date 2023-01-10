@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+  </head>
+  <style>
+    ::selection {
+      color: red;
+      background: yellow;
+    }
+    a {
+      text-decoration: none;
+      color: blue;
+    }
+    .content {
+      height: 150px;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+    }
+    .main {
+      display: flex;
+      justify-content: center;
+    }
+    hr {
+      width: 73%;
+      margin-bottom: 50px;
+    }
+    .item1 > a {
+      width: 60px;
+      text-decoration: none;
+      font-weight: bolder;
+      color: red;
+    }
+    .haha {
+      margin-top: 10px;
+      margin-bottom: 2px;
+      color: blue;
+      font-weight: bolde;
+      text-decoration: none;
+    }
+    #main {
+      margin-top: 5px;
+      height: auto;
+    }
+    .title {
+      width: 750px;
+      margin: 8px 0px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .edit {
+      width: 75px;
+      font-weight: bolder;
+      background-color: blue;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      margin-right: 25px;
+      height: 40px;
+    }
+    .two {
+      width: 35px;
+      height: 35px;
+      background: black;
+      border: 2px solid red;
+      border-radius: 50%;
+      display: flex;
+      color: white;
+      font-weight: bolder;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+    .one {
+      display: none;
+    }
+    .delet {
+      width: 75px;
+      background-color: blue;
+      border: none;
+      border-radius: 6px;
+      font-weight: bolder;
+      color: white;
+      height: 40px;
+    }
+    .body {
+      width: 750px;
+      margin: 10px 0px;
+      text-align: left;
+    }
+    .today {
+      display: none;
+    }
+    .edit:hover {
+      cursor: pointer;
+    }
+    .delet:hover {
+      cursor: pointer;
+    }
+  </style>
+
+  <body>
+    <div id="main"></div>
+  </body>
+  <script>
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+          get: (searchParams, prop) => searchParams.get(prop),
+        });
+        if (localStorage.getItem("Token") == null) {
+          window.location.replace("login.html");
+        }
+
+        var post = [];
+        $(document).ready(function () {
+          $.ajax({
+            type: "GET",
+            url: "https://jsonplaceholder.typicode.com/comments?postId=1",
+            success: function (payload) {
+              post = payload;
+            },
+          });
+        });
+        setTimeout(() => {
+          for (var i = 0; i < post.length; i++) {
+            var yashpatel = "";
+            yashpatel += `
+                    <div class="content">
+                        <div class="main" >
+                            <div class="two"></div>
+                            <div class="one">${post[i].postId}</div>
+                            <div class="three">
+                                <div class="item1"><a href="#">${post[i].name}</a></div>
+                                <div class="haha"><a href="#">${post[i].email}</a></div>
+                                <div data-id='${post[i].id}' id='${post[i].id}'>
+                                <div class="body">${post[i].body}</div>
+                                </div>
+                                </div>
+                                </div>
+                                <button onclick="ondelete()" class="edit">Edit</button>
+                                <button class="delet">Delete</button>
+                                </div>
+                                <hr>`;
+          }
+          $("#main").html(yashpatel);
+          // $("#main").on("click", ".delet", function () {
+          //   $(this).parent(".content").addClass("today");
+          // });
+          $(".main").each(function () {
+            var capitol = $(this).find(".one").text();
+            var akada = capitol.charAt(0);
+            $(this).find(".two").text(akada);
+          });
+          function ondelete(id){
+            $.ajax({
+              type:"GET",
+              url:"https://jsonplaceholder.typicode.com/comments?postId=1" + id,
+              success:function(data){
+                console.log(data,"id");
+              },
+              error:function(error){
+                console.log(error.responseJSON,"nooo");
+              }
+            });
+          };
+        }, 1000);
+  </script>
+</html>
