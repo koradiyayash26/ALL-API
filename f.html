@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Stores</title>
+</head>
+
+<body class="m-0 p-0 font-[''Poppins',sans-serif']">
+    <nav class="w-full h-14 bg-[#2874f0] flex justify-center items-center">
+        <div class="chiplogo"><a href="#" class="text-white font-extrabold t text-[18px] leading-[20px]">Chipkart</a>
+        </div>
+        <div class="pl-3 w-[467.844px] relative bg-white"><input type="search"
+                class="rounded-b-[2px] outline-none w-full flex items-center px-4 h-9"
+                placeholder="Search for products, brands and more"><button class="absolute right-[5px] top-[11px]" type="submit">
+                <svg width="20" height="20" viewBox="0 0 17 18" class="" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#2874F1" fill-rule="evenodd">
+                        <path class="_34RNph"
+                            d="m11.618 9.897l4.225 4.212c.092.092.101.232.02.313l-1.465 1.46c-.081.081-.221.072-.314-.02l-4.216-4.203">
+                        </path>
+                        <path class="_34RNph"
+                            d="m6.486 10.901c-2.42 0-4.381-1.956-4.381-4.368 0-2.413 1.961-4.369 4.381-4.369 2.42 0 4.381 1.956 4.381 4.369 0 2.413-1.961 4.368-4.381 4.368m0-10.835c-3.582 0-6.486 2.895-6.486 6.467 0 3.572 2.904 6.467 6.486 6.467 3.582 0 6.486-2.895 6.486-6.467 0-3.572-2.904-6.467-6.486-6.467">
+                        </path>
+                    </g>
+                </svg></button></div>
+    </nav>
+    <div class="container"></div>
+</body>
+<script>
+    var products = "";
+    $.ajax({
+        type: "get",
+        url: "https://fakestoreapi.com/products",
+        success: function (preload) {
+            // console.log(preload)
+            var categorie = preload;
+            for (var i = 0; i < categorie.length; i++) {
+                console.log(categorie[i]);
+                products += `
+                <div class="w-5"></div>
+                `
+                console.log(products)
+            }
+            $('.container').html(products)
+        },
+    });
+
+</script>
+
+</html>

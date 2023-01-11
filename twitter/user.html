@@ -1,11 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post listing</title>
+    <link rel="stylesheet" href="macke.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  <style>
+    ::selection {
+  color: red;
+  background: yellow;
+}
+a {
+  text-decoration: none;
+  color: blue;
+}
+.content {
+  height: 150px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.main {
+  display: flex;
+  justify-content: center;
+}
+hr {
+  width: 73%;
+  margin-bottom: 50px;
+}
+.item1 > a {
+  width: 60px;
+  text-decoration: none;
+  font-weight: bolder;
+  color: red;
+}
+.haha {
+  margin-top: 10px;
+  margin-bottom: 2px;
+  color: blue;
+  font-weight: bolde;
+  text-decoration: none;
+}
+#main {
+  margin-top: 5px;
+  height: auto;
+}
+.title {
+  width: 750px;
+  margin: 8px 0px;
+  font-weight: bold;
+  text-align: left;
+}
+.edit {
+  width: 75px;
+  font-weight: bolder;
+  background-color: blue;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  margin-right: 25px;
+  height: 40px;
+}
+.two {
+  width: 35px;
+  height: 35px;
+  background: black;
+  border: 2px solid red;
+  border-radius: 50%;
+  display: flex;
+  color: white;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+.one {
+  display: none;
+}
+.delet {
+  width: 75px;
+  background-color: blue;
+  border: none;
+  border-radius: 6px;
+  font-weight: bolder;
+  color: white;
+  height: 40px;
+}
+.body {
+  width: 750px;
+  margin: 10px 0px;
+  text-align: left;
+}
+.today {
+  display: none;
+}
+.edit:hover {
+  cursor: pointer;
+}
+.delet:hover {
+  cursor: pointer;
+}
+  </style>
+  <body>
+    <div id="main"></div>
+  </body>
+  <script>
+     var post = [];
+    var users = [];
+    $(document).ready(function () {
+      $.ajax({
+        type: "get",
+        url: "https://jsonplaceholder.typicode.com/posts/",
+        success: function (payload) {
+          post = payload;
+          console.log(post,"all api");
+        },
+      });
+      $.ajax({
+        type: "get",
+        url: "https://jsonplaceholder.typicode.com/users/",
+        success: function (payload) {
+          users = payload;
+          console.log(users);
+        },
+      });
+    });
+    setTimeout(() => {
+      for (var i = 0; i < post.length; i++) {
+        for (var j = 0; j < users.length; j++) {
+          if (post[i]["userId"] == users[j]["id"]) {
+            post[i]["username"] = users[j]["username"];
+            post[i]["name"] = users[j]["name"];
+            post[i]["email"] = users[j]["email"];
+          };
+        };
+      };
+      var yashpatel = "";
+      for (var y = 0; y < post.length; y++) {
+        yashpatel += `
+            <div class="content">
+                <div class="main" >
+                    <div class="two"></div>
+                    <div class="one">${post[y].username}</div>
+                    <div class="three">
+                        <div class="item1"><a href="#">${post[y].name}</a></div>
+                        <div class="haha"><a href="#">@${post[y].username}</a></div>
+                        <div data-id='${post[y].id}' id='${post[y].id}'>
+                        <div class="title">${post[y].email}</div>
+                        <div class="body">${post[y].body}</div>
+                        </div>
+                        </div>
+                        </div>
+                        <button id="lowde" onclick="onpatchpost(${post[y].id})" class="edit">Edit</button>
+                        <button onclick="deleteUser(${post[y].id})"class="delet">Delete</button>
+                        </div>
+                        <hr>`;
+      }
+      $("#main").html(yashpatel);
+      // delet matee 
+      console.log();
+      $("#main").on("click", ".delet", function () {
+        $(this).parent(".content").addClass("today");
+      });
+      // delet matee
+      // void mathii first later lea mate 
+      $(".main").each(function () {
+        var capitol = $(this).find(".one").text();
+        var akada = capitol.charAt(0);
+        $(this).find(".two").text(akada);
+      });
+    }, 1000);
+      // void mathii first later lea mate 
+    function onpatchpost(id) {
+      $.ajax({
+        type: "GET",
+        url: "https://jsonplaceholder.typicode.com/posts/" + id,
+        success: function (data) {
+          console.log(data);
+          var form = `<form id="form" onsubmit="return false">
+            <input type="text" id="id" hidden value="${data.id}"/>
+            <label for="text" id="title-h">Title:</label>
+            <input type="text" id="title-input" value="${data.title}"/>
+            <br>
+            <label id="body-h">body:</label>
+            <input type="text" id="body-input" value="${data.body}"/>
+            <button id="btn"  type="submit" onclick="onpatchsubmitpost(${data.id})">Submit</button>
+          </form>`;
+          $("#" + data.id).html(form);
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
+    function onpatchsubmitpost(id) {
+      console.log("form submited");
+      var formDAta = {
+        title: $("#title-input").val(),
+        body: $("#body-input").val(),
+      };
+      console.log(formDAta, "ok");
+      $.ajax({
+        type: "patch",
+        url: "https://jsonplaceholder.typicode.com/posts/" + id,
+        data: formDAta,
+        success: function (data) {
+          console.log(data);
+          var set = `<div id='${data.id}'>
+                        <div class="title">${data.email}</div>
+                        <div class="body">${data.body}</div>
+                        </div>`;
+          $("#" + id).html(set);
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
+  </script>
 </html>

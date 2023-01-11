@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+  </head>
+  <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      width: 100%;
+      height: 220px;
+      margin: 10px;
+    }
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+    .container {
+      padding: 2px 16px;
+    }
+    img {
+      width: 90%;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    #flex {
+      display: flex;
+      margin: 0px 20px;
+    }
+    #category{
+      margin: 10px 0px;
+    }
+    #title {
+      font-size: 15px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    span {
+      font-weight: bolder;
+    }
+    button{
+      background-color:blue ;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      width: 70px;
+      margin-left: 30px;
+      height: 25px;
+    }
+  </style>
+  <body>
+    <div id="products"></div>
+  </body>
+  <script>
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+    console.log(params.category);
+    $.ajax({
+      type: "GET",
+      url: "https://fakestoreapi.com/products/category/jewelery",
+      success: function (payload) {
+        console.log(payload);
+        var pro = "";
+        for (var i = 0; i < payload.length; i++) {
+          pro += `
+                <div id="flex">
+                    <div>
+                <div class="card">
+                <div id="img-div"><img  src="${payload[i].image}" alt="Image not found!"/> </div>
+                <div class="container">
+                <div id="price"><span>Price:</span>${payload[i].price}</div>
+                <div id="category"><span>Category:</span>${payload[i].category}</div>
+                <div id="btn"><button>BUY</button></div>
+                </div>
+                </div>
+                </div>
+                
+                `;
+          console.log();
+        }
+        $("#products").html(pro);
+      },
+      error: function (error) {
+        console.log(error.responseJSON);
+      },
+    });
+  </script>
+</html>
