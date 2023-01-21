@@ -10,8 +10,47 @@
       rel="stylesheet"
       href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <style>
+    .topnav {
+      overflow: hidden;
+      background-color: #e9e9e9;
+    }
+
+    .topnav a {
+      float: left;
+      display: block;
+      color: black;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .topnav a.active {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .topnav .search-container {
+      float: right;
+    }
+
+    .topnav input[type="text"] {
+      padding: 6px;
+      margin-top: 8px;
+      font-size: 17px;
+      border: none;
+    }
     .card {
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
       transition: 0.3s;
@@ -34,7 +73,7 @@
       display: flex;
       margin: 0px 20px;
     }
-    #category{
+    #category {
       margin: 10px 0px;
     }
     #title {
@@ -45,19 +84,10 @@
     span {
       font-weight: bolder;
     }
-    button{
-      background-color:blue ;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      width: 70px;
-      margin-left: 30px;
-      height: 25px;
-    }
     * {
       margin: 0;
     }
-    #categoris{
+    #categoris {
       display: flex;
     }
     .main-top {
@@ -69,18 +99,37 @@
       border-bottom: 1px solid black;
       margin-bottom: 10px;
     }
-    #products{
-      flex-wrap:wrap;
+    #products {
+      flex-wrap: wrap;
       display: flex;
     }
-    a{
+    .link {
       text-decoration: none;
       font-weight: bolder;
       text-transform: uppercase;
     }
+    .serch{
+      margin-right: 20px;
+    }
+    .cart-h {
+      display: flex;
+      justify-content: right;
+    }
   </style>
   <body>
+    <div class="topnav">
+      <a class="active link" href="#home">Home</a>
+      <a class="link" href="#about">About</a>
+      <a class="link" href="#contact">Contact</a>
+      <div class="search-container">
+        <form action="/action_page.php">
+          <input class="serch" type="text" placeholder="Search.." name="search" />
+          <a class="link" href="cart.html">Cart</a>
+        </form>
+      </div>
+    </div>
     <div id="categoris"></div>
+    <div class="cart-h"></div>
     <div id="products"></div>
   </body>
   <script>
@@ -89,24 +138,25 @@
     });
     console.log(params.category);
     $.ajax({
-        type: "GET",
-        url: "https://fakestoreapi.com/products/categories",
-        success: function (categoris) {
-          var p = "";
-          for (var i = 0; i < categoris.length; i++) {
-            p += `<div class="main-top"> <div class="main-items"><a href="products.html?category=${categoris[i]}">${categoris[i]}</a></div></div>`;
-          }
-          $("#categoris").html(p);
-        },
-        error: function (error) {
-          console.log(error.responseJSON);
-        },
-      });
+      type: "GET",
+      url: "https://fakestoreapi.com/products/categories",
+      success: function (categoris) {
+        var p = "";
+        for (var i = 0; i < categoris.length; i++) {
+          p += `<div class="main-top"> <div class="main-items"><a href="products.html?category=${categoris[i]}">${categoris[i]}</a></div></div>
+          `;
+        }
+        $("#categoris").html(p);
+      },
+      error: function (error) {
+        console.log(error.responseJSON);
+      },
+    });
     $.ajax({
       type: "GET",
       url: "https://fakestoreapi.com/products/category/" + params.category,
       success: function (payload) {
-        console.log(payload);
+        // console.log(payload);
         var pro = "";
         for (var i = 0; i < payload.length; i++) {
           pro += `
@@ -117,13 +167,13 @@
                 <div class="container">
                 <div id="price"><span>Price:</span>${payload[i].price}</div>
                 <div id="category"><span>Category:</span>${payload[i].category}</div>
-                <div id="btn"><button>BUY</button></div>
+                <div id="btn" onclick="addTocard(${payload[i].id})"><button>BUY</button></div>
                 </div>
                 </div>
                 </div>
                 
                 `;
-          console.log();
+          // console.log();
         }
         $("#products").html(pro);
       },
@@ -131,5 +181,23 @@
         console.log(error.responseJSON);
       },
     });
+    function addTocard(id) {
+      console.log(id);
+      $.ajax({
+        type: "POST",
+        url: "https://fakestoreapi.com/carts",
+        data: {
+          userId: 5,
+          date: 2020 - 02 - 03,
+          products: [{ productId: id, quantity: 1 }],
+        },
+        success: function (products) {
+          console.log(products);
+        },
+        error: function (error) {
+          console.log(error.responseJSON);
+        },
+      });
+    }
   </script>
 </html>
